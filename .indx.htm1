@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>فتح الكاميرا والموقع</title>
+  <style>
+    video { width: 100%; max-width: 400px; border: 2px solid #333; }
+    #info { margin-top: 10px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h2>تشغيل الكاميرا والحصول على الموقع</h2>
+  <video id="camera" autoplay></video>
+  <div id="info">جارٍ الحصول على معلوماتك...</div>
+
+  <script>
+    // تشغيل الكاميرا
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        document.getElementById('camera').srcObject = stream;
+      })
+      .catch(error => {
+        document.getElementById('info').innerText = "لم يتم السماح بالكاميرا.";
+      });
+
+    // الحصول على الموقع
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        document.getElementById('info').innerText =
+          `إحداثيات موقعك:\nخط العرض: ${lat.toFixed(5)}\nخط الطول: ${lon.toFixed(5)}`;
+      }, () => {
+        document.getElementById('info').innerText = "لم يتم السماح بالموقع.";
+      });
+    } else {
+      document.getElementById('info').innerText = "جهازك لا يدعم الموقع.";
+    }
+  </script>
+</body>
+</html>
+
+كيف تستخدمه:
+
+انسخ الكود إلى ملف بصيغة .html مثلاً: index.html
+
+افتح الملف في متصفح، أو ارفعه إلى سيرفر (مثل GitHub Pages أو Netlify).
+
+عند فتح الصفحة، ستظهر الكاميرا ويُطلب إذن الموقع.
+
+
+هل تريدني أساعدك في نشر الصفحة كرابط مباشر؟
+
